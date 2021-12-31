@@ -21,13 +21,13 @@ getEle("btnThemNV").onclick = function () {
     var gio = getEle("gioLam").value;
 
     isValid &= validation.checkEmpty(acc, "tbTKNV", "Tài Khoản Không Để Trống") && validation.checkID(acc, "tbTKNV", "Tài Khoản Bị Trùng", qlnv.mangNV);
-    isValid &= validation.checkEmpty(name, "tbTen", "Họ Và Tên Không Để Trống");
-    isValid &= validation.checkEmpty(email, "tbEmail", "Email Không để trống");
-    isValid &= validation.checkEmpty(pass, "tbMatKhau", "Mật Khẩu Không Để Trống");
-    isValid &= validation.checkEmpty(ngay, "tbNgay", "Ngày Làm Không Để Trống");
-    isValid &= validation.checkEmpty(luong, "tbLuongCB", "Lương Cơ Bản Không Để Trống");
-    // isValid &= validation.checkEmpty(chucvu,"tbChucVu","Chọn Chức Vụ");
-    isValid &= validation.checkEmpty(gio, "tbGiolam", "Giờ Làm Không Để Trống");
+    isValid &= validation.checkEmpty(name, "tbTen", "Họ Và Tên Không Để Trống") && validation.checkName(name, "tbTen","Họ Và Tên Không Có Ký Tự Số");
+    isValid &= validation.checkEmpty(email, "tbEmail", "Email Không để trống") && validation.checkEmail(email, "tbEmail","Email Không Đúng Định Dạng");
+    isValid &= validation.checkEmpty(pass, "tbMatKhau", "Mật Khẩu Không Để Trống")&& validation.checkPassword(pass, "tbMatKhau","Mật Khẩu Phải Từ 6 - 10 Ký Tự (Chứa Ít Nhất 1 Ký Tự Số, 1 Ký Tự In Hoa, 1 Ký Tự Đặc Biệt)");
+    isValid &= validation.checkEmpty(ngay, "tbNgay", "Ngày Làm Không Để Trống")&&validation.checkDate(ngay, "tbNgay", "Không Đúng ĐỊnh Dạng Ngày Tháng");
+    isValid &= validation.checkEmpty(luong, "tbLuongCB", "Lương Cơ Bản Không Để Trống")&&validation.checkLuongCB(luong, "tbLuongCB", "Lương Cơ Bản 1.000.000 - 20.000.000");
+    isValid &= validation.checkSelect("chucvu","tbChucVu","Chọn Chức Vụ Hợp Lệ");
+    isValid &= validation.checkEmpty(gio, "tbGiolam", "Giờ Làm Không Để Trống")&& validation.checkTime(gio, "tbGiolam", "Số Giờ Làm Trong Tháng Chỉ Từ 80-200");
 
     if (isValid) {
         var nv = new NhanVien(acc, name, email, pass, ngay, Number(luong), chucvu, gio);
