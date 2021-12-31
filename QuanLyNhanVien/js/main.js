@@ -1,4 +1,5 @@
 var qlnv = new QuanLyNhanVien();
+var validation = new Validation();
 
 getLocalStorage();
 
@@ -7,7 +8,9 @@ function getEle(id) {
 }
 
 //Hàm lấy thông tin từ form
-getEle("btnThemNV").onclick=function(){
+getEle("btnThemNV").onclick = function () {
+    var isValid = true;
+
     var acc = getEle("tknv").value;
     var name = getEle("name").value;
     var email = getEle("email").value;
@@ -17,39 +20,79 @@ getEle("btnThemNV").onclick=function(){
     var chucvu = getEle("chucvu").value;
     var gio = getEle("gioLam").value;
 
-    var sv = new NhanVien(acc, name,email,pass,ngay,Number(luong),chucvu,gio);
-    sv.tinhTongLuong();
-    sv.xepLoaiNV();
-    console.log(sv);
-    qlnv.them(sv);
-    console.log(qlnv.mangNV);
-    listTable(qlnv.mangNV);
-    setLocalStorage(qlnv.mangNV);
+    isValid &= validation.checkEmpty(acc, "tbTKNV", "Tài Khoản Không Để Trống") && validation.checkID(acc, "tbTKNV", "Tài Khoản Bị Trùng", qlnv.mangNV);
+    isValid &= validation.checkEmpty(name, "tbTen", "Họ Và Tên Không Để Trống");
+    isValid &= validation.checkEmpty(email, "tbEmail", "Email Không để trống");
+    isValid &= validation.checkEmpty(pass, "tbMatKhau", "Mật Khẩu Không Để Trống");
+    isValid &= validation.checkEmpty(ngay, "tbNgay", "Ngày Làm Không Để Trống");
+    isValid &= validation.checkEmpty(luong, "tbLuongCB", "Lương Cơ Bản Không Để Trống");
+    // isValid &= validation.checkEmpty(chucvu,"tbChucVu","Chọn Chức Vụ");
+    isValid &= validation.checkEmpty(gio, "tbGiolam", "Giờ Làm Không Để Trống");
+
+    if (isValid) {
+        var nv = new NhanVien(acc, name, email, pass, ngay, Number(luong), chucvu, gio);
+        nv.tinhTongLuong();
+        nv.xepLoaiNV();
+        console.log(nv);
+        qlnv.them(nv);
+        console.log(qlnv.mangNV);
+        listTable(qlnv.mangNV);
+        setLocalStorage(qlnv.mangNV);
+    }
+
+
 
 }
 // tableDanhSach
-function listTable(mang){
-    var content="";
-    mang.map((sv, index) => {
+function listTable(mang) {
+    var content = "";
+    mang.map((nv, index) => {
         var tr = `<tr>
-            <td>${sv.accNV}</td>
-            <td>${sv.nameNV}</td>
-            <td>${sv.emailNV}</td>
-            <td>${sv.ngayLam}</td>
-            <td>${sv.chucvu}</td>
-            <td>${sv.tongLuong}</td>
-            <td>${sv.loaiNv}</td>
+            <td>${nv.accNV}</td>
+            <td>${nv.nameNV}</td>
+            <td>${nv.emailNV}</td>
+            <td>${nv.ngayLam}</td>
+            <td>${nv.chucvu}</td>
+            <td>${nv.tongLuong}</td>
+            <td>${nv.loaiNv}</td>
             <td>
-                <button class="btn btn-danger" onclick="xoaSV('${sv.maSV}')">Xóa</button>
+                <button class="btn btn-danger" onclick="xoaNV('${nv.accNV}')">Xóa</button>
             </td>
-            <td>
-            <button class="btn btn-info" onclick="xemSV('${sv.maSV}')">Xem Chi Tiết</button>
-        </td>
         </tr>`;
         content += tr;
     });
     getEle("tableDanhSach").innerHTML = content;
 }
+
+function xoaNV(id) {
+    qlnv.xoa(id);
+    setLocalStorage(qlnv.mangNV);
+    listTable(qlnv.mangNV);
+}
+
+
+
+
+
+getEle("btnCapNhat").onclick = function () {
+    var acc = getEle("tknv").value;
+    var name = getEle("name").value;
+    var email = getEle("email").value;
+    var pass = getEle("password").value;
+    var ngay = getEle("datepicker").value;
+    var luong = getEle("luongCB").value;
+    var chucvu = getEle("chucvu").value;
+    var gio = getEle("gioLam").value;
+
+    var nv = new NhanVien(acc, name, email, pass, ngay, Number(luong), chucvu, gio);
+    nv.tinhTongLuong();
+    nv.xepLoaiNV();
+    qlnv.capNhap(nv);
+
+    listTable(qlnv.mangNV);
+    setLocalStorage(qlnv.mangNV);
+}
+ 
 function setLocalStorage(mang) {
     localStorage.setItem("DSNV", JSON.stringify(mang));
 }
