@@ -27,11 +27,22 @@ function QuanLyNhanVien() {
     this.capNhap = function (nv) {
         var vitri = this.timVT(nv.accNV);
         if (vitri != -1) {
-            this.mangNV[vitri] = sv;
+            this.mangNV[vitri] = nv;
         }
         else{
             console.log("Ko tìm thấy NV để cập nhập");
         }
 
+    }
+    this.searchName = function (keyword){
+        var keywordToLower =  keyword.toLowerCase();
+        var mangTK = [];
+        this.mangNV.map(function(nv){
+            var nameToLower = nv.nameNV.toLowerCase();
+            var indexName = nameToLower.indexOf(keywordToLower);
+            if(indexName >-1)
+            mangTK.push(nv)
+        });
+        return mangTK;
     }
 }
