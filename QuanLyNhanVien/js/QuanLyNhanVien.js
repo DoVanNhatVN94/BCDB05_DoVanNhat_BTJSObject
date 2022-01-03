@@ -38,11 +38,13 @@ function QuanLyNhanVien() {
         var keywordToLower =  keyword.toLowerCase();
         var mangTK = [];
         this.mangNV.map(function(nv){
-            var nameToLower = nv.nameNV.toLowerCase();
+            var nameToLower = nv.loaiNv.toLowerCase();
+            console.log(nameToLower);
             var indexName = nameToLower.indexOf(keywordToLower);
             if(indexName >-1)
             mangTK.push(nv)
         });
         return mangTK;
     }
+    
 }
