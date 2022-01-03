@@ -116,7 +116,7 @@ function getLocalStorage() {
         listTable(qlnv.mangNV);
     }
 }
-getEle("searchName").addEventListener("keyup",searchName)
+getEle("searchName").addEventListener("keyup",searchName);
 function searchName(){
     var keyword = getEle("searchName").value.trim();
     var mangTK =[];
