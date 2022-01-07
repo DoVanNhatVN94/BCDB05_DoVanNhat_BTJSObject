@@ -129,5 +129,25 @@ function Validation() {
         }
 
     }
+    this.checkID2 = function (value, spanID, message, mang) {
+
+        var isExist = false;
+
+        isExist = mang.some(function (nv) {
+            return nv.accNV == value;
+        });
+        if (isExist) {
+            //mã bị trùng
+            
+            document.getElementById(spanID).innerHTML = "";
+        document.getElementById(spanID).style.display = "none";
+            return false;
+        }
+        
+        document.getElementById(spanID).innerHTML = message;
+            document.getElementById(spanID).style.display = "block";
+        return true;
+    }
+    
 
 }

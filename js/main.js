@@ -3,6 +3,7 @@ var validation = new Validation();
 
 getLocalStorage();
 
+//hàm viết tắt
 function getEle(id) {
     return document.getElementById(id);
 }
@@ -43,7 +44,7 @@ getEle("btnThemNV").onclick = function () {
 
 
 }
-// tableDanhSach
+// in ra bảng 
 function listTable(mang) {
     var content = "";
     mang.map((nv, index) => {
@@ -68,6 +69,62 @@ function xoaNV(id) {
     qlnv.xoa(id);
     setLocalStorage(qlnv.mangNV);
     listTable(qlnv.mangNV);
+}
+//Xem Info ID
+function xemNV(id) {
+    console.log(id);
+    var viTri = qlnv.timVT(id);
+    if (viTri != -1) {
+        // Tìm thấy nhân viên c
+        var nv = qlnv.mangNV[viTri];
+        getEle("tknv").value = nv.accNV;
+        getEle("tknv").disabled = true;
+        getEle("name").value = nv.nameNV;
+        getEle("email").value = nv.emailNV;
+        getEle("password").value = nv.passNV;
+        getEle("datepicker").value = nv.ngayLam;
+        getEle("luongCB").value = nv.luongCB;
+        getEle("chucvu").value = nv.chucvu;
+        getEle("gioLam").value = nv.gioLam;
+    }
+    else {
+        console.log("ko tìm thấy Nhân viên cần xem");
+    }
+}
+// Click button Check Info
+getEle("btnXemTT").onclick = function () {
+    resetSpan();
+    var isValid = true;
+    var acc = getEle("tknv").value;
+    isValid &= validation.checkID2(acc, "tbTKNV", "Tài Khoản Chưa Có", qlnv.mangNV);
+    if (isValid) {
+        console.log("tài khoản ko tìm thấy");
+    }
+    else {
+        xemNV(acc);
+    }
+
+}
+// xóa thông báo span 
+function resetSpan() {
+    var nodeList = document.querySelectorAll("span.sp-thongbao");
+    var nodeArray = [];
+    for (var i = 0; i < nodeList.length; ++i) {
+        nodeArray[i] = nodeList[i];
+    }
+    nodeArray.map(x => x.style.display = "none")
+}
+// reset lại form
+function resetForm() {
+
+    // reset() chỉ dùng cho form
+    getEle("form1").reset();
+    getEle("tknv").disabled = false;
+}
+//clik đóng
+getEle("btnDong").onclick = function () {
+    resetSpan();
+    resetForm();
 }
 
 
@@ -105,21 +162,24 @@ getEle("btnCapNhat").onclick = function () {
         listTable(qlnv.mangNV);
         setLocalStorage(qlnv.mangNV);
     }
+    getEle("tknv").disabled = false;
 }
-
+// lưu trữ cục bộ
 function setLocalStorage(mang) {
     localStorage.setItem("DSNV", JSON.stringify(mang));
 }
+// Nhập gt cục bộ
 function getLocalStorage() {
     if (localStorage.getItem("DSNV") != null) {
         qlnv.mangNV = JSON.parse(localStorage.getItem("DSNV"));
         listTable(qlnv.mangNV);
     }
 }
-getEle("searchName").addEventListener("keyup",searchName);
-function searchName(){
+// tìm kiếm theo loại
+getEle("searchName").addEventListener("keyup", searchName);
+function searchName() {
     var keyword = getEle("searchName").value.trim();
-    var mangTK =[];
-    mangTK=qlnv.searchName(keyword);
+    var mangTK = [];
+    mangTK = qlnv.searchName(keyword);
     listTable(mangTK);
 }
