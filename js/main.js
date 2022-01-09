@@ -40,14 +40,11 @@ getEle("btnThemNV").onclick = function () {
         listTable(qlnv.mangNV);
         setLocalStorage(qlnv.mangNV);
     }
-
-
-
 }
 // in ra bảng 
 function listTable(mang) {
     var content = "";
-    mang.map((nv, index) => {
+    mang.map(function (sv, index)  {
         var tr = `<tr>
             <td>${nv.accNV}</td>
             <td>${nv.nameNV}</td>
@@ -64,6 +61,29 @@ function listTable(mang) {
     });
     getEle("tableDanhSach").innerHTML = content;
 }
+
+// lưu trữ cục bộ
+function setLocalStorage(mang) {
+    localStorage.setItem("DSNV", JSON.stringify(mang));
+}
+// Nhập gt cục bộ
+function getLocalStorage() {
+    if (localStorage.getItem("DSNV") != null) {
+        qlnv.mangNV = JSON.parse(localStorage.getItem("DSNV"));
+        listTable(qlnv.mangNV);
+    }
+}
+// tìm kiếm theo loại
+getEle("searchName").addEventListener("keyup", searchName);
+function searchName() {
+    var keyword = getEle("searchName").value.trim();
+    var mangTK = [];
+    mangTK = qlnv.searchName(keyword);
+    listTable(mangTK);
+}
+//tìm kiếm bằng button
+getEle("btnTimNV").onclick= searchName;
+
 //Xoa ACC
 function xoaNV(id) {
     qlnv.xoa(id);
@@ -163,23 +183,4 @@ getEle("btnCapNhat").onclick = function () {
         setLocalStorage(qlnv.mangNV);
     }
     getEle("tknv").disabled = false;
-}
-// lưu trữ cục bộ
-function setLocalStorage(mang) {
-    localStorage.setItem("DSNV", JSON.stringify(mang));
-}
-// Nhập gt cục bộ
-function getLocalStorage() {
-    if (localStorage.getItem("DSNV") != null) {
-        qlnv.mangNV = JSON.parse(localStorage.getItem("DSNV"));
-        listTable(qlnv.mangNV);
-    }
-}
-// tìm kiếm theo loại
-getEle("searchName").addEventListener("keyup", searchName);
-function searchName() {
-    var keyword = getEle("searchName").value.trim();
-    var mangTK = [];
-    mangTK = qlnv.searchName(keyword);
-    listTable(mangTK);
 }

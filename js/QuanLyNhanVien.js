@@ -6,19 +6,17 @@ function QuanLyNhanVien() {
 
     this.timVT = function (id) {
         var vitri = -1;
-        this.mangNV.map(
-            function (nv, index) {
-                if (nv.accNV === id)
-                    vitri = index;
-            }
-        )
+        this.mangNV.map(function (nv, index) {
+            if (nv.accNV === id)
+                vitri = index;
+        });
         return vitri;
     }
 
     this.xoa = function (id) {
         var vitri = this.timVT(id);
         if (vitri != -1) {
-            this.mangNV.splice(vitri);
+            this.mangNV.splice(vitri,1);
         }
         else {
             console.log("Ko tìm thấy tài khoản cần xóa");
@@ -29,22 +27,22 @@ function QuanLyNhanVien() {
         if (vitri != -1) {
             this.mangNV[vitri] = nv;
         }
-        else{
+        else {
             console.log("Ko tìm thấy NV để cập nhập");
         }
 
     }
-    this.searchName = function (keyword){
-        var keywordToLower =  keyword.toLowerCase();
+    this.searchName = function (keyword) {
+        var keywordToLower = keyword.toLowerCase();
         var mangTK = [];
-        this.mangNV.map(function(nv){
+        this.mangNV.map(function (nv) {
             var nameToLower = nv.loaiNv.toLowerCase();
             console.log(nameToLower);
             var indexName = nameToLower.indexOf(keywordToLower);
-            if(indexName >-1)
-            mangTK.push(nv)
+            if (indexName > -1)
+                mangTK.push(nv)
         });
         return mangTK;
     }
-    
+
 }
