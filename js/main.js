@@ -44,7 +44,7 @@ getEle("btnThemNV").onclick = function () {
 // in ra bảng 
 function listTable(mang) {
     var content = "";
-    mang.map(function (sv, index)  {
+    mang.map((nv, index) => {
         var tr = `<tr>
             <td>${nv.accNV}</td>
             <td>${nv.nameNV}</td>
